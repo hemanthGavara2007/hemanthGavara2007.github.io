@@ -52,6 +52,99 @@
     opacity: 0.5;
   }
 
+  /* Hero Canvas */
+  #hero-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Glowing Orbs */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(80px);
+    opacity: 0;
+    animation: orbFloat 12s ease-in-out infinite;
+  }
+  .orb-1 {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+    top: -100px; left: -100px;
+    animation-delay: 0s;
+    animation-duration: 14s;
+  }
+  .orb-2 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+    top: 40%; right: -80px;
+    animation-delay: -5s;
+    animation-duration: 18s;
+  }
+  .orb-3 {
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.025) 0%, transparent 70%);
+    bottom: 10%; left: 30%;
+    animation-delay: -9s;
+    animation-duration: 16s;
+  }
+  @keyframes orbFloat {
+    0%   { opacity: 0; transform: translateY(0px) scale(1); }
+    20%  { opacity: 1; }
+    50%  { transform: translateY(-40px) scale(1.05); }
+    80%  { opacity: 1; }
+    100% { opacity: 0; transform: translateY(0px) scale(1); }
+  }
+
+  /* Scanlines */
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 3px,
+      rgba(0,0,0,0.07) 3px,
+      rgba(0,0,0,0.07) 4px
+    );
+    opacity: 0.4;
+  }
+
+  /* Dot Grid Background */
+  .dot-grid {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+    animation: gridShift 20s linear infinite;
+  }
+  @keyframes gridShift {
+    from { background-position: 0 0; }
+    to   { background-position: 32px 32px; }
+  }
+
+  /* Spotlight that follows mouse */
+  .spotlight {
+    position: fixed;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+    background: radial-gradient(circle, rgba(255,255,255,0.035) 0%, transparent 65%);
+    transform: translate(-50%, -50%);
+    transition: left 0.15s ease, top 0.15s ease;
+  }
+
   /* NAV */
   nav {
     position: fixed;
@@ -113,16 +206,6 @@
     pointer-events: none;
     letter-spacing: 0.05em;
     user-select: none;
-  }
-
-  .hero-logo-center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -60%);
-    width: clamp(160px, 22vw, 280px);
-    opacity: 0;
-    animation: fadeUp 1s ease 0.3s forwards;
   }
 
   .hero-content {
@@ -609,6 +692,12 @@
 <body>
 
 <div class="cursor" id="cursor"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+<div class="dot-grid"></div>
+<div class="scanlines"></div>
+<div class="spotlight" id="spotlight"></div>
 
 <!-- NAV -->
 <nav>
@@ -625,8 +714,8 @@
 
 <!-- HERO -->
 <section class="hero">
+  <canvas id="hero-canvas"></canvas>
   <div class="hero-bg-text">HEMANTH</div>
-  <img src="H.png" class="hero-logo-center" alt="HG Logo">
   <div class="hero-content">
     <div class="hero-left">
       <h1>Hemanth<br><em>Gavara</em></h1>
@@ -834,16 +923,91 @@
 </footer>
 
 <script>
-  // Cursor
+  // Cursor + Spotlight
   const cursor = document.getElementById('cursor');
+  const spotlight = document.getElementById('spotlight');
   document.addEventListener('mousemove', e => {
     cursor.style.left = e.clientX + 'px';
     cursor.style.top = e.clientY + 'px';
+    spotlight.style.left = e.clientX + 'px';
+    spotlight.style.top = e.clientY + 'px';
   });
   document.querySelectorAll('a, button, .tag, .cert-item, .profile-card').forEach(el => {
     el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
     el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
   });
+
+  // Hero Canvas — floating particles + connections
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', () => { resize(); initParticles(); });
+
+  class Particle {
+    constructor() { this.reset(true); }
+    reset(initial = false) {
+      this.x = Math.random() * W;
+      this.y = initial ? Math.random() * H : H + 10;
+      this.size = Math.random() * 1.4 + 0.3;
+      this.speedX = (Math.random() - 0.5) * 0.25;
+      this.speedY = -Math.random() * 0.35 - 0.08;
+      this.opacity = Math.random() * 0.45 + 0.08;
+      this.life = initial ? Math.floor(Math.random() * 300) : 0;
+      this.maxLife = Math.random() * 280 + 160;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      this.life++;
+      const progress = this.life / this.maxLife;
+      this.currentOpacity = this.opacity * Math.sin(progress * Math.PI);
+      if (this.life >= this.maxLife) this.reset();
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${this.currentOpacity})`;
+      ctx.fill();
+    }
+  }
+
+  function initParticles() {
+    particles = Array.from({ length: 90 }, () => new Particle());
+  }
+  initParticles();
+
+  function drawConnections() {
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 90) {
+          const alpha = (1 - dist / 90) * 0.055;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, W, H);
+    drawConnections();
+    particles.forEach(p => { p.update(); p.draw(); });
+    requestAnimationFrame(animate);
+  }
+  animate();
 
   // Scroll Reveal
   const reveals = document.querySelectorAll('.reveal');
