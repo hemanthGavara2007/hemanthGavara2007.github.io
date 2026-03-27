@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hemanth Gavara — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #000000;
+    --white: #ffffff;
+    --grey: #888888;
+    --light-grey: #e8e8e8;
+    --accent: #ffffff;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Space Mono', monospace;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom Cursor */
+  .cursor {
+    width: 12px; height: 12px;
+    background: white;
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: difference;
+  }
+  .cursor.hover { width: 40px; height: 40px; }
+
+  /* Grain Overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.5;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 48px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-logo img {
+    height: 40px;
+    width: 40px;
+    object-fit: contain;
+    filter: invert(0);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--grey);
+    text-decoration: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(120px, 22vw, 320px);
+    color: rgba(255,255,255,0.03);
+    white-space: nowrap;
+    pointer-events: none;
+    letter-spacing: 0.05em;
+    user-select: none;
+  }
+
+  .hero-logo-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    width: clamp(160px, 22vw, 280px);
+    opacity: 0;
+    animation: fadeUp 1s ease 0.3s forwards;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .hero-left h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 9vw, 130px);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.5s forwards;
+  }
+
+  .hero-left h1 em {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    color: var(--grey);
+  }
+
+  .hero-right {
+    text-align: right;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.7s forwards;
+  }
+
+  .hero-right p {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey);
+    line-height: 2;
+  }
+
+  .hero-right .year {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: var(--white);
+    letter-spacing: 0.05em;
+    line-height: 1;
+    display: block;
+    margin-top: 8px;
+  }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: rgba(255,255,255,0.12);
+    margin: 0 48px;
+  }
+
+  /* SECTION BASE */
+  section {
+    padding: 100px 48px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-label::after {
+    content: '';
+    display: block;
+    height: 1px;
+    width: 60px;
+    background: var(--grey);
+  }
+
+  /* ABOUT */
+  #about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  #about .left .big-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 4vw, 56px);
+    line-height: 1.15;
+    font-style: italic;
+    color: var(--white);
+  }
+
+  #about .right {
+    padding-top: 60px;
+  }
+
+  #about .right p {
+    font-size: 13px;
+    line-height: 2;
+    color: var(--grey);
+    margin-bottom: 24px;
+  }
+
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 32px;
+  }
+
+  .tag {
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 6px 16px;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white);
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .tag:hover { background: var(--white); color: var(--black); }
+
+  /* EDUCATION */
+  #education { padding: 100px 48px; }
+
+  .edu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.1);
+    margin-top: 48px;
+  }
+
+  .edu-item {
+    background: var(--black);
+    padding: 40px;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .edu-item:hover { background: #0d0d0d; }
+
+  .edu-item .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 72px;
+    color: rgba(255,255,255,0.05);
+    position: absolute;
+    right: 24px;
+    top: 16px;
+    line-height: 1;
+  }
+
+  .edu-item h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+
+  .edu-item p {
+    font-size: 11px;
+    color: var(--grey);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* SKILLS */
+  #skills { background: #050505; }
+
+  .skills-marquee {
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 48px -48px 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 24px 0;
+  }
+
+  .marquee-inner {
+    display: inline-block;
+    animation: marquee 18s linear infinite;
+  }
+
+  .marquee-inner span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    letter-spacing: 0.05em;
+    padding: 0 40px;
+    color: rgba(255,255,255,0.15);
+  }
+
+  .marquee-inner span.highlight {
+    color: var(--white);
+    -webkit-text-stroke: 0px;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .skills-bars {
+    margin-top: 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .skill-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .skill-name {
+    width: 200px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--grey);
+    flex-shrink: 0;
+  }
+
+  .skill-track {
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+    position: relative;
+  }
+
+  .skill-fill {
+    position: absolute;
+    left: 0; top: 0;
+    height: 1px;
+    background: var(--white);
+    width: 0;
+    transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .skill-pct {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--grey);
+    width: 48px;
+    text-align: right;
+  }
+
+  /* CERTIFICATIONS */
+  #certifications { padding: 100px 48px; }
+
+  .cert-list {
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .cert-item {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding: 28px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    text-decoration: none;
+    color: inherit;
+    transition: padding-left 0.3s;
+    position: relative;
+  }
+
+  .cert-item:hover {
+    padding-left: 24px;
+  }
+
+  .cert-item:hover .cert-arrow { opacity: 1; transform: translateX(4px); }
+
+  .cert-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    color: var(--grey);
+    width: 32px;
+    flex-shrink: 0;
+  }
+
+  .cert-title {
+    flex: 1;
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    font-style: italic;
+  }
+
+  .cert-badge {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 6px 14px;
+  }
+
+  .cert-arrow {
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    color: var(--white);
+    font-size: 20px;
+  }
+
+  /* PROJECTS */
+  #projects { background: var(--white); color: var(--black); padding: 100px 48px; }
+
+  #projects .section-label { color: rgba(0,0,0,0.4); }
+  #projects .section-label::after { background: rgba(0,0,0,0.3); }
+
+  .project-card {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    margin-top: 48px;
+    padding: 60px;
+    border: 1px solid rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .project-card:hover { border-color: rgba(0,0,0,0.4); }
+
+  .project-card .proj-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 120px;
+    color: rgba(0,0,0,0.06);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .project-card .proj-info h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    letter-spacing: 0.03em;
+    color: var(--black);
+    margin-bottom: 16px;
+  }
+
+  .project-card .proj-info p {
+    font-size: 13px;
+    color: rgba(0,0,0,0.5);
+    line-height: 1.8;
+    max-width: 480px;
+    margin-bottom: 28px;
+  }
+
+  .proj-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--black);
+    text-decoration: none;
+    border-bottom: 1px solid var(--black);
+    padding-bottom: 4px;
+    transition: gap 0.3s;
+  }
+
+  .proj-link:hover { gap: 20px; }
+
+  /* PROFILES */
+  #profiles { padding: 100px 48px; }
+
+  .profile-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.1);
+    margin-top: 48px;
+  }
+
+  .profile-card {
+    background: var(--black);
+    padding: 48px 40px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .profile-card:hover { background: var(--white); color: var(--black); }
+  .profile-card:hover .prof-icon { color: var(--black); }
+  .profile-card:hover .prof-name { color: var(--black); }
+  .profile-card:hover .prof-handle { color: rgba(0,0,0,0.5); }
+
+  .prof-icon {
+    font-size: 28px;
+    color: var(--grey);
+    transition: color 0.3s;
+    line-height: 1;
+  }
+
+  .prof-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    font-style: italic;
+    transition: color 0.3s;
+  }
+
+  .prof-handle {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--grey);
+    transition: color 0.3s;
+    text-transform: uppercase;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  footer .foot-logo img {
+    height: 32px; width: 32px;
+    object-fit: contain;
+    opacity: 0.5;
+  }
+
+  footer p {
+    font-size: 11px;
+    color: var(--grey);
+    letter-spacing: 0.1em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    .nav-links { gap: 20px; }
+    section { padding: 64px 24px; }
+    .hero { padding: 0 24px 60px; }
+    .divider { margin: 0 24px; }
+    #about { grid-template-columns: 1fr; gap: 40px; }
+    #about .right { padding-top: 0; }
+    .edu-grid { grid-template-columns: 1fr; }
+    .profile-grid { grid-template-columns: 1fr; }
+    .project-card { flex-direction: column; gap: 24px; padding: 36px 24px; }
+    .project-card .proj-num { font-size: 80px; }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+    .skills-marquee { margin: 48px -24px 0; }
+    .skill-name { width: 130px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#"><img src="H.png" alt="HG Logo"></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#profiles">Profiles</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-text">HEMANTH</div>
+  <img src="H.png" class="hero-logo-center" alt="HG Logo">
+  <div class="hero-content">
+    <div class="hero-left">
+      <h1>Hemanth<br><em>Gavara</em></h1>
+    </div>
+    <div class="hero-right">
+      <p>CSE Student · IIT Madras</p>
+      <p>Python · UI/UX · Cybersecurity</p>
+      <span class="year">2007</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="left reveal">
+    <div class="section-label">About</div>
+    <p class="big-text">"A developer who designs, a designer who codes — and a hacker who does both."</p>
+    <div class="tag-row">
+      <span class="tag">Python</span>
+      <span class="tag">UI/UX</span>
+      <span class="tag">Cybersecurity</span>
+      <span class="tag">Graphic Design</span>
+      <span class="tag">PowerPoint</span>
+      <span class="tag">Data Science</span>
+    </div>
+  </div>
+  <div class="right reveal">
+    <p>I'm Hemanth Gavara, a passionate technologist born in 2007. Currently pursuing CSE at JNTUK alongside an IIT Madras BS in Data Science, I balance academic rigor with hands-on exploration in cybersecurity, design, and software development.</p>
+    <p>With 3+ years in graphic design, a gold badge on HackerRank for Python, and a cybersecurity internship under my belt, I bring both creativity and technical precision to everything I build.</p>
+    <p>I believe the best solutions live at the intersection of aesthetics and engineering — and I'm always building there.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-label reveal">Education</div>
+  <div class="edu-grid">
+    <div class="edu-item reveal">
+      <span class="num">01</span>
+      <h3>Little Woods School</h3>
+      <p>15 Years · Foundational Education</p>
+    </div>
+    <div class="edu-item reveal">
+      <span class="num">02</span>
+      <h3>Aakash Institute</h3>
+      <p>2 Years · Competitive Prep</p>
+    </div>
+    <div class="edu-item reveal">
+      <span class="num">03</span>
+      <h3>JNTUK — CSE Core</h3>
+      <p>4 Years · B.Tech Computer Science &amp; Engineering (Batch 29)</p>
+    </div>
+    <div class="edu-item reveal">
+      <span class="num">04</span>
+      <h3>IIT Madras — BS Data Science</h3>
+      <p>Foundation ✓ · Currently: Diploma in Programming</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label reveal">Skills</div>
+
+  <div class="skills-marquee">
+    <div class="marquee-inner">
+      <span class="highlight">Python</span>
+      <span>·</span>
+      <span>UI/UX Design</span>
+      <span>·</span>
+      <span class="highlight">Cybersecurity</span>
+      <span>·</span>
+      <span>Graphic Design</span>
+      <span>·</span>
+      <span class="highlight">PowerPoint</span>
+      <span>·</span>
+      <span>Data Science</span>
+      <span>·</span>
+      <span class="highlight">Python</span>
+      <span>·</span>
+      <span>UI/UX Design</span>
+      <span>·</span>
+      <span>Cybersecurity</span>
+      <span>·</span>
+      <span>Graphic Design</span>
+      <span>·</span>
+      <span>PowerPoint</span>
+      <span>·</span>
+      <span>Data Science</span>
+      <span>·</span>
+    </div>
+  </div>
+
+  <div class="skills-bars">
+    <div class="skill-row reveal">
+      <span class="skill-name">Python</span>
+      <div class="skill-track"><div class="skill-fill" data-width="90"></div></div>
+      <span class="skill-pct">90</span>
+    </div>
+    <div class="skill-row reveal">
+      <span class="skill-name">Graphic Design</span>
+      <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
+      <span class="skill-pct">85</span>
+    </div>
+    <div class="skill-row reveal">
+      <span class="skill-name">UI/UX Design</span>
+      <div class="skill-track"><div class="skill-fill" data-width="78"></div></div>
+      <span class="skill-pct">78</span>
+    </div>
+    <div class="skill-row reveal">
+      <span class="skill-name">Cybersecurity</span>
+      <div class="skill-track"><div class="skill-fill" data-width="72"></div></div>
+      <span class="skill-pct">72</span>
+    </div>
+    <div class="skill-row reveal">
+      <span class="skill-name">PowerPoint</span>
+      <div class="skill-track"><div class="skill-fill" data-width="95"></div></div>
+      <span class="skill-pct">95</span>
+    </div>
+    <div class="skill-row reveal">
+      <span class="skill-name">Data Science</span>
+      <div class="skill-track"><div class="skill-fill" data-width="65"></div></div>
+      <span class="skill-pct">65</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-label reveal">Certifications</div>
+  <div class="cert-list">
+    <a class="cert-item reveal" href="https://www.hackerrank.com/profile/hemanthgavara9" target="_blank">
+      <span class="cert-num">01</span>
+      <span class="cert-title">Gold Badge — Python</span>
+      <span class="cert-badge">HackerRank</span>
+      <span class="cert-arrow">↗</span>
+    </a>
+    <a class="cert-item reveal" href="https://credentials.corizo.in/credential/b0023e72-a7e2-4ff6-af74-147ae36e144c" target="_blank">
+      <span class="cert-num">02</span>
+      <span class="cert-title">Cybersecurity Internship</span>
+      <span class="cert-badge">Corizo</span>
+      <span class="cert-arrow">↗</span>
+    </a>
+    <a class="cert-item reveal" href="https://www.linkedin.com/posts/hemanth-gavara-591296372_hackathonwinner-machinelearning-computervision-activity-7442606611568799744-lr1D" target="_blank">
+      <span class="cert-num">03</span>
+      <span class="cert-title">Consolation Prize — Cybersecurity Hackathon</span>
+      <span class="cert-badge">ML · CV</span>
+      <span class="cert-arrow">↗</span>
+    </a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label reveal">Projects</div>
+  <div class="project-card reveal">
+    <div class="proj-num">01</div>
+    <div class="proj-info">
+      <h2>OrangeDocs</h2>
+      <p>A personal project pushing the boundaries of document tooling. Built with Python and a passion for clean, functional design — OrangeDocs is where code meets craft.</p>
+      <a class="proj-link" href="https://github.com/hemanthGavara2007/OrangeDocs" target="_blank">
+        View on GitHub →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- PROFILES -->
+<section id="profiles">
+  <div class="section-label reveal">Online Profiles</div>
+  <div class="profile-grid">
+    <a class="profile-card reveal" href="https://www.hackerrank.com/profile/hemanthgavara9" target="_blank">
+      <div class="prof-icon">⌨</div>
+      <div class="prof-name">HackerRank</div>
+      <div class="prof-handle">hemanthgavara9</div>
+    </a>
+    <a class="profile-card reveal" href="https://www.linkedin.com/in/hemanth-gavara-591296372/" target="_blank">
+      <div class="prof-icon">◈</div>
+      <div class="prof-name">LinkedIn</div>
+      <div class="prof-handle">hemanth-gavara</div>
+    </a>
+    <a class="profile-card reveal" href="https://github.com/hemanthGavara2007" target="_blank">
+      <div class="prof-icon">⌥</div>
+      <div class="prof-name">GitHub</div>
+      <div class="prof-handle">hemanthGavara2007</div>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-logo"><img src="H.png" alt="HG"></div>
+  <p>© 2025 Hemanth Gavara — All rights reserved</p>
+  <p>Vijayawada, Andhra Pradesh, IN</p>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, button, .tag, .cert-item, .profile-card').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+  });
+
+  // Scroll Reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Skill Bar Fill on scroll
+  const skillFills = document.querySelectorAll('.skill-fill');
+  const skillObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const width = entry.target.getAttribute('data-width');
+        entry.target.style.width = width + '%';
+        skillObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  skillFills.forEach(el => skillObserver.observe(el));
+</script>
+</body>
+</html>
