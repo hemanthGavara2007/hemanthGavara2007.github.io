@@ -206,6 +206,8 @@
   .hero-right p { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--grey); line-height: 1.6; }
   .hero-right .year { font-family: 'Bebas Neue', sans-serif; font-size: 40px; color: var(--white); margin-top: 5px; display: block; }
 
+  .divider { height: 1px; background: rgba(255,255,255,0.12); margin: 0 24px; }
+
   /* SECTIONS */
   section { padding: 80px 24px; }
   @media (min-width: 769px) { section { padding: 100px 48px; } }
@@ -221,7 +223,8 @@
   #about .right p { font-size: 13px; line-height: 1.8; color: var(--grey); margin-bottom: 20px; }
 
   .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
-  .tag { border: 1px solid rgba(255,255,255,0.2); padding: 5px 12px; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .tag { border: 1px solid rgba(255,255,255,0.2); padding: 5px 12px; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; transition: 0.3s; }
+  .tag:hover { background: var(--white); color: var(--black); }
 
   /* EDUCATION & PROFILES GRID */
   .edu-grid, .profile-grid { display: grid; grid-template-columns: 1fr; gap: 1px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1); margin-top: 40px; }
@@ -230,28 +233,56 @@
     .profile-grid { grid-template-columns: repeat(3, 1fr); }
   }
 
-  .edu-item, .profile-card { background: var(--black); padding: 30px; position: relative; }
+  .edu-item, .profile-card { background: var(--black); padding: 30px; position: relative; overflow: hidden; }
+  .edu-item .num { font-family: 'Bebas Neue', sans-serif; font-size: 60px; color: rgba(255,255,255,0.05); position: absolute; right: 20px; top: 10px; }
+  .edu-item h3 { font-family: 'DM Serif Display', serif; font-size: 20px; font-style: italic; margin-bottom: 8px; }
+  .edu-item p { font-size: 10px; color: var(--grey); text-transform: uppercase; }
 
   /* SKILLS */
+  .skills-marquee { overflow: hidden; white-space: nowrap; margin: 40px -24px 0; border-top: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08); padding: 20px 0; }
+  .marquee-inner { display: inline-block; animation: marquee 18s linear infinite; }
+  .marquee-inner span { font-family: 'Bebas Neue', sans-serif; font-size: 32px; padding: 0 30px; color: rgba(255,255,255,0.15); }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  .skills-bars { margin-top: 50px; display: flex; flex-direction: column; gap: 30px; }
   .skill-row { display: flex; flex-direction: column; gap: 10px; }
   @media (min-width: 769px) { .skill-row { flex-direction: row; align-items: center; gap: 24px; } }
 
   .skill-name { font-size: 10px; letter-spacing: 0.1em; color: var(--grey); text-transform: uppercase; }
-  @media (min-width: 769px) { .skill-name { width: 200px; } }
+  @media (min-width: 769px) { .skill-name { width: 200px; flex-shrink: 0; } }
 
   .skill-track { flex: 1; height: 1px; background: rgba(255,255,255,0.1); position: relative; }
   .skill-fill { position: absolute; left: 0; top: 0; height: 1px; background: var(--white); width: 0; transition: width 1.5s ease-out; }
+  .skill-pct { font-family: 'Bebas Neue', sans-serif; font-size: 16px; color: var(--grey); width: 40px; text-align: right; }
+
+  /* CERTIFICATIONS */
+  .cert-list { border-top: 1px solid rgba(255,255,255,0.1); margin-top: 30px; }
+  .cert-item { display: flex; align-items: center; gap: 20px; padding: 25px 0; border-bottom: 1px solid rgba(255,255,255,0.08); text-decoration: none; color: inherit; transition: 0.3s; }
+  .cert-item:hover { padding-left: 15px; }
+  .cert-title { flex: 1; font-family: 'DM Serif Display', serif; font-size: 20px; font-style: italic; }
+  .cert-badge { font-size: 9px; border: 1px solid rgba(255,255,255,0.15); padding: 4px 10px; color: var(--grey); }
 
   /* PROJECTS */
-  .project-card { display: flex; flex-direction: column; gap: 20px; padding: 30px; border: 1px solid rgba(255,255,255,0.1); margin-top: 30px; }
+  #projects { background: var(--white); color: var(--black); }
+  #projects .section-label { color: rgba(0,0,0,0.4); }
+  .project-card { display: flex; flex-direction: column; gap: 20px; padding: 30px; border: 1px solid rgba(0,0,0,0.1); margin-top: 30px; }
   @media (min-width: 769px) { .project-card { flex-direction: row; gap: 60px; padding: 60px; } }
-  
-  .proj-num { font-family: 'Bebas Neue', sans-serif; font-size: 60px; color: rgba(255,255,255,0.05); }
+  .proj-num { font-family: 'Bebas Neue', sans-serif; font-size: 60px; color: rgba(0,0,0,0.06); line-height: 1; }
   @media (min-width: 769px) { .proj-num { font-size: 120px; } }
+  .proj-info h2 { font-family: 'Bebas Neue', sans-serif; font-size: 40px; margin-bottom: 10px; }
+  .proj-info p { font-size: 13px; color: rgba(0,0,0,0.6); line-height: 1.6; max-width: 480px; margin-bottom: 20px; }
+  .proj-link { text-decoration: none; color: black; font-size: 10px; border-bottom: 1px solid black; padding-bottom: 3px; text-transform: uppercase; letter-spacing: 0.1em; }
+
+  /* PROFILES */
+  .profile-card { text-decoration: none; color: inherit; transition: 0.3s; }
+  .profile-card:hover { background: var(--white); color: var(--black); }
+  .prof-name { font-family: 'DM Serif Display', serif; font-size: 24px; font-style: italic; margin: 10px 0; }
+  .prof-handle { font-size: 10px; color: var(--grey); text-transform: uppercase; }
 
   /* FOOTER */
   footer { padding: 40px 24px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; gap: 20px; align-items: center; text-align: center; }
   @media (min-width: 769px) { footer { flex-direction: row; justify-content: space-between; text-align: left; } }
+  footer p { font-size: 10px; color: var(--grey); }
 
   /* ANIMATIONS */
   .reveal { opacity: 0; transform: translateY(20px); transition: 0.6s ease-out; }
@@ -295,34 +326,170 @@
   </div>
 </section>
 
+<div class="divider"></div>
+
+<section id="about">
+  <div class="left reveal">
+    <div class="section-label">About</div>
+    <p class="big-text">"Debugging the dreams and Compiling the reality"</p>
+    <div class="tag-row">
+      <span class="tag">Python</span>
+      <span class="tag">UI/UX</span>
+      <span class="tag">Cybersecurity</span>
+      <span class="tag">Graphic Design</span>
+      <span class="tag">PowerPoint</span>
+      <span class="tag">Data Science</span>
+    </div>
+  </div>
+  <div class="right reveal">
+    <p>I am Hemanth Gavara, born in the year 2007. I am studying Computer Science and Engineering at JNTUK. At the same time I am also pursuing BS in Data Science from IIT Madras.</p>
+    <p>My passion is Software Development and Cyber Security. I like to conduct research on functioning of minute things. I do a lot of hands-on work in such areas.</p>
+    <p>My 3+ years of Graphic Designing has led me to believe that beauty is always inherent in any element—we just play a role in bringing it out.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="education">
+  <div class="section-label reveal">Education</div>
+  <div class="edu-grid">
+    <div class="edu-item reveal">
+      <span class="num">01</span>
+      <h3>Little Woods School</h3>
+      <p>15 Years · Foundational Education</p>
+    </div>
+    <div class="edu-item reveal">
+      <span class="num">02</span>
+      <h3>Aakash Institute</h3>
+      <p>2 Years · Competitive Prep</p>
+    </div>
+    <div class="edu-item reveal">
+      <span class="num">03</span>
+      <h3>JNTUK — CSE Core</h3>
+      <p>4 Years · B.Tech (Batch 29)</p>
+    </div>
+    <div class="edu-item reveal">
+      <span class="num">04</span>
+      <h3>IIT Madras — BS Data Science</h3>
+      <p>Currently: Diploma in Programming</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="skills">
+  <div class="section-label reveal">Skills</div>
+  <div class="skills-marquee">
+    <div class="marquee-inner">
+      <span>Python</span> <span>·</span> <span>UI/UX Design</span> <span>·</span> <span>Cybersecurity</span> <span>·</span> <span>Graphic Design</span> <span>·</span> <span>PowerPoint</span> <span>·</span> <span>Data Science</span>
+      <span>Python</span> <span>·</span> <span>UI/UX Design</span> <span>·</span> <span>Cybersecurity</span> <span>·</span> <span>Graphic Design</span> <span>·</span> <span>PowerPoint</span> <span>·</span> <span>Data Science</span>
+    </div>
+  </div>
+  <div class="skills-bars">
+    <div class="skill-row reveal"><span class="skill-name">Python</span><div class="skill-track"><div class="skill-fill" data-width="90"></div></div><span class="skill-pct">90</span></div>
+    <div class="skill-row reveal"><span class="skill-name">Graphic Design</span><div class="skill-track"><div class="skill-fill" data-width="85"></div></div><span class="skill-pct">85</span></div>
+    <div class="skill-row reveal"><span class="skill-name">UI/UX Design</span><div class="skill-track"><div class="skill-fill" data-width="78"></div></div><span class="skill-pct">78</span></div>
+    <div class="skill-row reveal"><span class="skill-name">Cybersecurity</span><div class="skill-track"><div class="skill-fill" data-width="72"></div></div><span class="skill-pct">72</span></div>
+    <div class="skill-row reveal"><span class="skill-name">PowerPoint</span><div class="skill-track"><div class="skill-fill" data-width="95"></div></div><span class="skill-pct">95</span></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="certifications">
+  <div class="section-label reveal">Certifications</div>
+  <div class="cert-list">
+    <a class="cert-item reveal" href="https://www.hackerrank.com/profile/hemanthgavara9" target="_blank">
+      <span class="cert-title">Gold Badge — Python</span>
+      <span class="cert-badge">HackerRank</span>
+    </a>
+    <a class="cert-item reveal" href="https://credentials.corizo.in/credential/b0023e72-a7e2-4ff6-af74-147ae36e144c" target="_blank">
+      <span class="cert-title">Cybersecurity Internship</span>
+      <span class="cert-badge">Corizo</span>
+    </a>
+    <a class="cert-item reveal" href="https://www.linkedin.com/posts/hemanth-gavara-591296372_hackathonwinner-machinelearning-computervision-activity-7442606611568799744-lr1D" target="_blank">
+      <span class="cert-title">Consolation Prize — Hackathon</span>
+      <span class="cert-badge">ML · CV</span>
+    </a>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-label reveal">Projects</div>
+  <div class="project-card reveal">
+    <div class="proj-num">01</div>
+    <div class="proj-info">
+      <h2>OrangeDocs</h2>
+      <p>A group project created during the Next-Gen Cybersecurity Hackathon, pushing the boundaries of OCR technology.</p>
+      <a class="proj-link" href="https://github.com/hemanthGavara2007/OrangeDocs" target="_blank">View on GitHub →</a>
+    </div>
+  </div>
+</section>
+
+<section id="profiles">
+  <div class="section-label reveal">Profiles</div>
+  <div class="profile-grid">
+    <a class="profile-card reveal" href="https://www.hackerrank.com/profile/hemanthgavara9" target="_blank">
+      <div class="prof-name">HackerRank</div>
+      <div class="prof-handle">hemanthgavara9</div>
+    </a>
+    <a class="profile-card reveal" href="https://www.linkedin.com/in/hemanth-gavara-591296372/" target="_blank">
+      <div class="prof-name">LinkedIn</div>
+      <div class="prof-handle">hemanth-gavara</div>
+    </a>
+    <a class="profile-card reveal" href="https://github.com/hemanthGavara2007" target="_blank">
+      <div class="prof-name">GitHub</div>
+      <div class="prof-handle">hemanthGavara2007</div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-logo"><img src="H.png" alt="HG"></div>
+  <p>© 2026 Hemanth Gavara — Kakinada, India</p>
+</footer>
+
 <script>
-  // Mobile-aware Spotlight & Cursor
   const cursor = document.getElementById('cursor');
   const spotlight = document.getElementById('spotlight');
-  
   document.addEventListener('mousemove', e => {
     if(window.matchMedia("(pointer: fine)").matches) {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
-      spotlight.style.left = e.clientX + 'px';
-      spotlight.style.top = e.clientY + 'px';
+      cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
+      spotlight.style.left = e.clientX + 'px'; spotlight.style.top = e.clientY + 'px';
     }
   });
 
-  // Simplified Particle Resize for Performance
   const canvas = document.getElementById('hero-canvas');
   const ctx = canvas.getContext('2d');
   let W, H, particles = [];
-
-  function resize() {
-    W = canvas.width = canvas.parentElement.offsetWidth;
-    H = canvas.height = canvas.parentElement.offsetHeight;
-  }
-  window.addEventListener('resize', resize);
+  function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
   resize();
+  window.addEventListener('resize', resize);
 
-  // ... [Keep your Particle class and animate logic here] ...
-  // (Your existing JS for particles and reveal is solid, just ensure resize() is called)
+  class Particle {
+    constructor() { this.reset(true); }
+    reset(initial = false) {
+      this.x = Math.random() * W; this.y = initial ? Math.random() * H : H + 10;
+      this.size = Math.random() * 1.4 + 0.3; this.speedY = -Math.random() * 0.35 - 0.08;
+      this.life = initial ? Math.floor(Math.random() * 300) : 0; this.maxLife = Math.random() * 280 + 160;
+    }
+    update() { this.y += this.speedY; this.life++; if (this.life >= this.maxLife) this.reset(); }
+    draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(255,255,255,0.2)`; ctx.fill(); }
+  }
+  for(let i=0; i<60; i++) particles.push(new Particle());
+  function animate() { ctx.clearRect(0, 0, W, H); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+  animate();
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  const skillObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.style.width = entry.target.getAttribute('data-width') + '%'; } });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.skill-fill').forEach(el => skillObserver.observe(el));
 </script>
 </body>
 </html>
