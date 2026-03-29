@@ -445,21 +445,51 @@
   </div>
 </section>
 
-<footer>
-  <div class="foot-logo"><img src="H.png" alt="HG"></div>
-  <p>© 2026 Hemanth Gavara — Kakinada, India</p>
+<footer style="background: #050505; padding: 60px 24px; border-top: 1px solid rgba(255,255,255,0.05);">
+  <div style="max-width: 1200px; margin: 0 auto; width: 100%;">
+    
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 30px; text-align: center;">
+      
+      <div class="foot-logo" style="opacity: 0.8; transition: transform 0.3s;">
+        <img src="H.png" alt="HG" style="height: 45px; width: 45px; filter: grayscale(1) brightness(1.5);">
+      </div>
+
+      <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+        <a href="#about" style="color: var(--grey); text-decoration: none; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;">About</a>
+        <a href="#projects" style="color: var(--grey); text-decoration: none; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;">Projects</a>
+        <a href="https://github.com/hemanthGavara2007" target="_blank" style="color: var(--grey); text-decoration: none; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;">GitHub</a>
+      </div>
+
+      <div style="height: 1px; width: 50px; background: rgba(255,255,255,0.1);"></div>
+
+      <div style="line-height: 2;">
+        <p style="font-size: 10px; color: var(--white); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 5px;">Hemanth Gavara</p>
+        <p style="font-size: 9px; color: var(--grey); letter-spacing: 0.1em;">&copy; 2026 — Designed & Developed by Hemanth</p>
+        <p style="font-size: 9px; color: var(--grey); letter-spacing: 0.1em; margin-top: 10px;">Kakinada, Andhra Pradesh, India</p>
+      </div>
+
+      <a href="#" style="margin-top: 20px; color: var(--white); text-decoration: none; font-size: 11px; border: 1px solid rgba(255,255,255,0.2); padding: 10px 20px; text-transform: uppercase; letter-spacing: 0.2em; transition: 0.3s;" onmouseover="this.style.background='white'; this.style.color='black'" onmouseout="this.style.background='transparent'; this.style.color='white'">
+        Back to Top ↑
+      </a>
+
+    </div>
+  </div>
 </footer>
 
 <script>
+  // CURSOR & SPOTLIGHT LOGIC
   const cursor = document.getElementById('cursor');
   const spotlight = document.getElementById('spotlight');
   document.addEventListener('mousemove', e => {
     if(window.matchMedia("(pointer: fine)").matches) {
-      cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
-      spotlight.style.left = e.clientX + 'px'; spotlight.style.top = e.clientY + 'px';
+      cursor.style.left = e.clientX + 'px'; 
+      cursor.style.top = e.clientY + 'px';
+      spotlight.style.left = e.clientX + 'px'; 
+      spotlight.style.top = e.clientY + 'px';
     }
   });
 
+  // HERO CANVAS LOGIC
   const canvas = document.getElementById('hero-canvas');
   const ctx = canvas.getContext('2d');
   let W, H, particles = [];
@@ -470,24 +500,42 @@
   class Particle {
     constructor() { this.reset(true); }
     reset(initial = false) {
-      this.x = Math.random() * W; this.y = initial ? Math.random() * H : H + 10;
-      this.size = Math.random() * 1.4 + 0.3; this.speedY = -Math.random() * 0.35 - 0.08;
-      this.life = initial ? Math.floor(Math.random() * 300) : 0; this.maxLife = Math.random() * 280 + 160;
+      this.x = Math.random() * W; 
+      this.y = initial ? Math.random() * H : H + 10;
+      this.size = Math.random() * 1.4 + 0.3; 
+      this.speedY = -Math.random() * 0.35 - 0.08;
+      this.life = initial ? Math.floor(Math.random() * 300) : 0; 
+      this.maxLife = Math.random() * 280 + 160;
     }
     update() { this.y += this.speedY; this.life++; if (this.life >= this.maxLife) this.reset(); }
-    draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = `rgba(255,255,255,0.2)`; ctx.fill(); }
+    draw() { 
+      ctx.beginPath(); 
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); 
+      ctx.fillStyle = `rgba(255,255,255,0.15)`; 
+      ctx.fill(); 
+    }
   }
+
   for(let i=0; i<60; i++) particles.push(new Particle());
-  function animate() { ctx.clearRect(0, 0, W, H); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+  function animate() { 
+    ctx.clearRect(0, 0, W, H); 
+    particles.forEach(p => { p.update(); p.draw(); }); 
+    requestAnimationFrame(animate); 
+  }
   animate();
 
+  // INTERSECTION OBSERVERS
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); } });
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
   const skillObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.style.width = entry.target.getAttribute('data-width') + '%'; } });
+    entries.forEach(entry => { 
+      if (entry.isIntersecting) { 
+        entry.target.style.width = entry.target.getAttribute('data-width') + '%'; 
+      } 
+    });
   }, { threshold: 0.3 });
   document.querySelectorAll('.skill-fill').forEach(el => skillObserver.observe(el));
 </script>
